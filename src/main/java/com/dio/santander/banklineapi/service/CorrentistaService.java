@@ -26,7 +26,7 @@ public class CorrentistaService {
                 .cpf(correntistaDTO.getCpf())
                 .conta(new Conta().builder()
                         .saldo(0.0)
-                        .numero(new Date().getTime())
+                        .numero2(new Date().getTime())
                         .build())
                 .build();
 
