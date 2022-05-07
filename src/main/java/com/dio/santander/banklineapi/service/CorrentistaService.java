@@ -8,12 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CorrentistaService {
 
     @Autowired
     private CorrentistaRepository correntistaRepository;
+
+    public List<Correntista> findAll() {
+        return correntistaRepository.findAll();
+    }
 
     public void save(CorrentistaDTO correntistaDTO) {
         Correntista correntista = new Correntista().builder()
@@ -26,5 +31,13 @@ public class CorrentistaService {
                 .build();
 
         correntistaRepository.save(correntista);
+    }
+
+    public void updateSaldo(Integer idConta, Double valorAtual) {
+        Correntista correntista = correntistaRepository.findById(idConta).orElse(null);
+        if (correntista != null) {
+            correntista.getConta().setSaldo(correntista.getConta().getSaldo() + valorAtual);
+            correntistaRepository.save(correntista);
+        }
     }
 }

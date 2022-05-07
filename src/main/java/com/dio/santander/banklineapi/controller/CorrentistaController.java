@@ -14,18 +14,15 @@ import java.util.List;
 public class CorrentistaController {
 
     @Autowired
-    private CorrentistaRepository correntistaRepository;
-
-    @Autowired
     private CorrentistaService correntistaService;
 
     @GetMapping
-    public List<Correntista> findAll(){
-        return correntistaRepository.findAll();
+    public List<Correntista> findAll() {
+        return correntistaService.findAll();
     }
 
     @PostMapping
-    public void save(@RequestBody CorrentistaDTO correntistaDTO){
+    public void save(@RequestBody CorrentistaDTO correntistaDTO) {
         correntistaService.save(correntistaDTO);
     }
 }

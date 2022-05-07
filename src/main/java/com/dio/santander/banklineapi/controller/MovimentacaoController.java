@@ -15,18 +15,15 @@ import java.util.List;
 public class MovimentacaoController {
 
     @Autowired
-    private MovimentacaoRepository movimentacaoRepository;
-
-    @Autowired
     private MovimentacaoService movimentacaoService;
 
     @GetMapping
-    public List<Movimentacao> findAll(){
-        return movimentacaoRepository.findAll();
+    public List<Movimentacao> findAll() {
+        return movimentacaoService.findAll();
     }
 
     @PostMapping
-    public void save(@RequestBody MovimentacaoDTO movimentacaoDTO){
+    public void save(@RequestBody MovimentacaoDTO movimentacaoDTO) {
         movimentacaoService.save(movimentacaoDTO);
     }
 }

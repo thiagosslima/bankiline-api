@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MovimentacaoService {
@@ -20,12 +21,17 @@ public class MovimentacaoService {
     private MovimentacaoRepository movimentacaoRepository;
 
     @Autowired
-    private CorrentistaRepository correntistaRepository;
+    private CorrentistaService correntistaService;
+
+    public List<Movimentacao> findAll() {
+        return movimentacaoRepository.findAll();
+    }
 
     public void save(MovimentacaoDTO movimentacaoDTO) {
         Double valorAtual = movimentacaoDTO.getMovimentacaoTipo() == MovimentacaoTipo.RECEITA
                 ? movimentacaoDTO.getValor()
                 : movimentacaoDTO.getValor() - 1;
+
         Movimentacao movimentacao = new Movimentacao().builder()
                 .descricao(movimentacaoDTO.getDescricao())
                 .valor(valorAtual)
@@ -33,11 +39,7 @@ public class MovimentacaoService {
                 .idConta(movimentacaoDTO.getIdConta())
                 .build();
 
-        Correntista correntista = correntistaRepository.findById(movimentacaoDTO.getIdConta()).orElse(null);
-        if(correntista != null){
-            correntista.getConta().setSaldo(correntista.getConta().getSaldo()+ valorAtual);
-            correntistaRepository.save(correntista);
-        }
+        correntistaService.updateSaldo(movimentacaoDTO.getIdConta(), valorAtual);
 
         movimentacaoRepository.save(movimentacao);
     }
